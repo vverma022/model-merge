@@ -1,11 +1,15 @@
 import Header from "../components/ui/header"
+import Search from "../components/ui/search"
 
 
 const Main = () => {
   return (
     <>
     <Header />
-    <div>This is the main dashboard</div>
+    <div className="flex justify-center items-center h-screen">
+      
+    <Search />
+    </div>
     </>
   )
 }

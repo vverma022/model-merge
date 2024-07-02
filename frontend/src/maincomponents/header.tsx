@@ -1,4 +1,4 @@
-import { ModeToggle } from './mode-toggle'
+import { ModeToggle } from '../components/ui/mode-toggle'
 
 const Header = () => {
   return (

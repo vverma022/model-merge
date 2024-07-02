@@ -1,7 +1,7 @@
 
-import { Input } from './input'
-import { Button } from './button'
-import { SelectModel } from './selectmodel'
+import { Input } from '../components/ui/input'
+import { Button } from '../components/ui/button'
+import { SelectModel } from '../components/ui/selectmodel'
 
 const Search = () => {
   return (

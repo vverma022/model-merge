@@ -4,7 +4,7 @@ import Search from "../maincomponents/search"
 const Main = () => {
   return (
     <>
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen m-2">
     <Search />
     </div>
     </>

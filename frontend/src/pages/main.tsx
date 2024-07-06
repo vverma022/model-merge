@@ -1,11 +1,17 @@
 import Search from "../maincomponents/search"
+import Sidebar2 from "../components/ui/sidebar2"
 
 
 const Main = () => {
   return (
     <>
-    <div className="flex justify-center items-center h-screen m-2">
+    <div className="flex h-full">
+      <div className="w-1/4 max-h-full">
+    <Sidebar2 />
+    </div>
+    <div className="w-3/4 h-full">
     <Search />
+    </div>
     </div>
     </>
   )

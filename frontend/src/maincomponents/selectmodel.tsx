@@ -6,7 +6,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "./select"
+} from "../components/ui/select"
 
 export function SelectModel() {
   return (
@@ -17,7 +17,8 @@ export function SelectModel() {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Text-Based</SelectLabel>
-          <SelectItem value="llama-3">llama-3</SelectItem>
+          <SelectItem value="llama-70b-8192">llama-3</SelectItem>
+          <SelectItem value="Mixtral-8x7b-32768">Mixtral</SelectItem>
         </SelectGroup>
         <SelectGroup>
             <SelectLabel>Image-Based</SelectLabel>

@@ -1,21 +1,16 @@
+import React from 'react'
 import { Link } from "react-router-dom"
-import { Button } from "../../components/ui/button"
-import { Sheet, SheetTrigger, SheetContent } from "../../components/ui/sheet"
-import Main from "../../pages/main"
 import LogoIcon from "../../assets/logo"
 
-
-export default function Sidebar() {
+const Sidebar2 = () => {
   return (
-    <div className="flex justify-between">
-      <div className="hidden lg:block lg:w-64 lg:shrink-0 lg:border-r">
-        <div className="flex h-full flex-col justify-between py-6 px-4">
-          <div className="space-y-6">
-            <Link  className="flex items-center gap-2 font-bold" to={"/"}>
-              <LogoIcon className="h-6 w-6" />
-              <span className="text-lg">ModelMerge</span>
-            </Link>
-            <nav className="space-y-1">
+    <div className='border h-full w-full'>
+       <div className="flex h-full flex-col justify-between py-6 px-4">
+       <Link  className="flex items-center gap-2 font-bold" to={"/"}>
+          <LogoIcon className="h-6 w-6" />
+            <span className="text-lg">ModelMerge</span>
+        </Link>
+        <nav className="space-y-1">
               <Link
                 
                 className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium"
@@ -39,18 +34,7 @@ export default function Sidebar() {
                 Recents
               </div>
             </nav>
-          </div>
-          <div className="space-y-4">
-            <Button variant="outline" size="sm" className="w-full">
-              Upgrade to Pro
-            </Button>
-            <div className="flex gap-2 text-sm justify-center">
-              <GlobeIcon className="h-5 w-5" />
-              <span>English</span>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
   )
 }
@@ -73,7 +57,6 @@ function ActivityIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
-
 
 function GlobeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -206,3 +189,5 @@ function UsersIcon(props : React.SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+
+export default Sidebar2

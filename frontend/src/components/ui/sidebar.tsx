@@ -3,6 +3,7 @@ import { Button } from "../../components/ui/button"
 import { Sheet, SheetTrigger, SheetContent } from "../../components/ui/sheet"
 import Main from "../../pages/main"
 import LogoIcon from "../../assets/logo"
+import ModeButton from "./modebutton"
 
 
 export default function Sidebar() {
@@ -12,7 +13,7 @@ export default function Sidebar() {
         <div className="flex h-full flex-col justify-between py-6 px-4">
           <div className="space-y-6">
             <Link  className="flex items-center gap-2 font-bold" to={"/"}>
-              <LogoIcon className="h-6 w-6" />
+              <LogoIcon/>
               <span className="text-lg">ModelMerge</span>
             </Link>
             <nav className="space-y-1">
@@ -41,6 +42,7 @@ export default function Sidebar() {
             </nav>
           </div>
           <div className="space-y-4">
+            <ModeButton />
             <Button variant="outline" size="sm" className="w-full">
               Upgrade to Pro
             </Button>

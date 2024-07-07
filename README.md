@@ -20,7 +20,11 @@ Model Merge is an open-source platform that consolidates multiple language model
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
+
+https://github.com/vverma022/model-merge/assets/109036913/50a1de4c-2d16-4791-badc-09cafcb3ebc5
+
+
 
 
 ## Installation

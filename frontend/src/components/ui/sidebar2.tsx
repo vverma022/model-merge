@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import LogoIcon from "../../assets/logo"
 import { Button } from "./button"
-import { ModeToggle } from './mode-toggle'
 import Modebutton from './modebutton'
 
+
 const Sidebar2 = () => {
+
   return (
     <div className="flex justify-between h-screen">
       <div className="hidden lg:block lg:w-64 lg:shrink-0 lg:border-r">
@@ -17,14 +17,14 @@ const Sidebar2 = () => {
             <nav className="space-y-1">
               <Link
                 className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium"
-                to={"/"}
+                to={"/about-us"}
               >
                 <HomeIcon className="h-5 w-5" />
                 About-Us
               </Link>
               <Link
                 className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium"
-                to={"/"}
+                to={"/info/model"}
               >
                 <ActivityIcon className="h-5 w-5" />
                 Models

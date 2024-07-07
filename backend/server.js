@@ -3,6 +3,8 @@ import cors from 'cors';
 import { configDotenv } from 'dotenv';
 import groq from './routes/groq.js';
 import gemini from './routes/gemini.js';
+import aimlapi from './routes/aimlapi.js';
+import cohere from './routes/cohere.js';
 
 configDotenv();
 
@@ -16,7 +18,8 @@ app.use(cors());
 // Routes
  app.use('/api', groq);
  app.use('/api2', gemini);
-// app.use('/api3', api3);
+ app.use('/api3', aimlapi);
+ app.use('/api4', cohere);
 
 
 app.listen(port, () => {

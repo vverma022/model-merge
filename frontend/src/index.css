@@ -60,3 +60,9 @@
       @apply bg-background text-foreground;
     }
   }
+
+  @utilities {
+    .text-main{
+      @apply text-primary;
+    }
+  }

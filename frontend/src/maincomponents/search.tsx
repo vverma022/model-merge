@@ -13,7 +13,9 @@ const Search = () => {
       <Input type="text" placeholder="Prompt" />
       </div>
       <div>
-      <Button type="submit" className='w-20'>Send</Button>
+      <Button type="submit" className='w-28 bg-red-600 hover:bg-red-400 text-white'>
+        Send
+      </Button>
       </div>
     </div>
     )

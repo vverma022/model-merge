@@ -17,7 +17,7 @@ export const ModelCards = ({CardT, CardD,Company}: ModelCardsProps) => {
           <CardTitle className="text-center pb-2">{CardT}</CardTitle>
         </CardHeader>
         <CardContent className="flex gap-4 justify-center flex-col">
-          <ul className="font-extralight text-sm">Developed By {Company}</ul>
+          <ul className="font-extralight text-sm text-red-600">Developed By {Company}</ul>
           <p className="overflow-hidden text-pretty overflow-y-auto max-h-48">
             {CardD}
           </p>

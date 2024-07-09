@@ -6,7 +6,6 @@ const Main = () => {
     return (
       <>
        <div className="flex h-full">
-      {/* Sidebar */}
       <div className="w-64 max-h-full">
         <Sidebar2 />
       </div>

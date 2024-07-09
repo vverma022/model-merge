@@ -9,7 +9,7 @@ const Welcome = () => {
             <div className="w-max">
                 <h1 className="animate-typing overflow-hidden whitespace-nowrap border-r-4  pr-5 text-5xl  font-bold">Welcome to ModelMerge</h1>
                 <div className="flex justify-center mt-8">
-                    <Button onClick={() => navigate("/main")}>Get Started</Button>
+                    <Button onClick={() => navigate("/main")} className="bg-red-600 hover:bg-red-400 text-white">Get Started</Button>
                 </div>
             </div>
         </div>

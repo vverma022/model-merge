@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.14.1",
+    "axios": "^1.7.2",
     "cohere-ai": "^7.10.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

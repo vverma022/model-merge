@@ -8,8 +8,11 @@ import {
   SelectValue,
 } from "../components/ui/select"
 
+interface SelectModelProps {
+  onModelChange: (value: string) => void
+}
 
-export function SelectModel(onModelChange) {
+export function SelectModel({ onModelChange }: SelectModelProps) {
   return (
     <Select onValueChange={onModelChange}>
       <SelectTrigger className="w-[180px]">
@@ -22,6 +25,10 @@ export function SelectModel(onModelChange) {
           <SelectItem value="Mixtral-8x7b-32768">Mistral</SelectItem>
           <SelectItem value="command-r-plus">Command-R-Plus</SelectItem>
         </SelectGroup>
+        <SelectGroup>
+          <SelectLabel>Image-Based</SelectLabel>
+          <SelectItem value="SDXL 1.0">Stable Diffusion-XL</SelectItem>
+          </SelectGroup>
       </SelectContent>
     </Select>
   )

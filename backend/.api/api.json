@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "monster-api",
+      "source": "@monster-api/v1.0#1ean2fly9qa23t",
+      "integrity": "sha512-JLCy/rw9chzeYEipcAFFFBXhVMGpZtGks4tKWNdoAt6tw7ArwsCe3FjIPsbpWnKjnN7+/7+rXaQdie6Y/VQlkA==",
+      "installerVersion": "6.1.2"
+    }
+  ]
+}

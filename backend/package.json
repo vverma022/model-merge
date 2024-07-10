@@ -12,6 +12,8 @@
   "author": "Vasu Verma",
   "license": "ISC",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.3",
+    "@api/monster-api": "file:.api/apis/monster-api",
     "@google/generative-ai": "^0.14.1",
     "axios": "^1.7.2",
     "cohere-ai": "^7.10.6",

@@ -4,6 +4,7 @@ import { configDotenv } from 'dotenv';
 import groq from './routes/groq.js';
 import openai from './routes/openai.js';
 import cohere from './routes/cohere.js';
+import claude from './routes/claude.js';
 
 configDotenv();
 
@@ -18,6 +19,7 @@ app.use(cors());
  app.use('/api', groq);
  app.use('/api2', openai);
  app.use('/api4', cohere);
+ app.use('/api5', claude);
 
 
 app.listen(port, () => {

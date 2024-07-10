@@ -1,0 +1,2472 @@
+{
+  "components": {
+    "schemas": {
+      "200ApiResponse": {
+        "properties": {
+          "callback_url": {
+            "description": "Callback URL for status update",
+            "example": "",
+            "type": "string"
+          },
+          "message": {
+            "example": "Request Accepted Successfully",
+            "type": "string"
+          },
+          "process_id": {
+            "example": "aaaaaa-bbbbbb-cc-ggh",
+            "type": "string"
+          },
+          "status_url": {
+            "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "##default"
+        }
+      },
+      "400ApiResponse": {
+        "properties": {
+          "message": {
+            "example": "Invalid Payload | Payload missing",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "##default"
+        }
+      },
+      "401ApiResponse": {
+        "properties": {
+          "message": {
+            "example": "Unauthorised",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "##default"
+        }
+      },
+      "403ApiResponse": {
+        "properties": {
+          "message": {
+            "example": "Insufficient Credits. Please recharge...",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "##default"
+        }
+      },
+      "404ApiResponse": {
+        "properties": {
+          "message": {
+            "example": "Process id not found",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "##default"
+        }
+      },
+      "415ApiResponse": {
+        "properties": {
+          "message": {
+            "example": "Unsupported Media",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "##default"
+        }
+      },
+      "429ApiResponse": {
+        "properties": {
+          "message": {
+            "example": "Quota Exceeded",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "##default"
+        }
+      },
+      "500ApiResponse": {
+        "properties": {
+          "message": {
+            "example": "Internal Server Error",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "xml": {
+          "name": "##default"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "title": "AI Models",
+    "version": "v1"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/generate/data-augmentation-service": {
+      "post": {
+        "description": "The Data Augmentation Service enables users to expand their datasets by generating additional data rows based on existing data or creating a new preference dataset. This service is particularly useful for model fine-tuning, leading to better performance by introducing more varied data.\n\nUsers can specify details about the data to be augmented, including source type and data split, and choose between two tasks: generating evolved instructions or generating preference datasets.\n\nNote: Due to OpenAI token generation Rate limits, right now the service is avialable to models with > 400,000 TPM. accesible through Tier 2 and above accounts.\n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "Evolving Instructions Example": {
+                  "summary": "Example for evolving instructions task",
+                  "value": {
+                    "data_config": {
+                      "data_path": "distilabel-internal-testing/instruction-dataset-mini",
+                      "data_source_type": "hub_link",
+                      "data_subset": null,
+                      "prompt_column_name": "prompt",
+                      "split": "test"
+                    },
+                    "generate_model1_name": "gpt-3.5-turbo",
+                    "generate_model2_name": "gpt-3.5-turbo",
+                    "judge_model_name": "gpt-3.5-turbo",
+                    "num_evolutions": 2,
+                    "openai_api_key": "YOUR_OPENAI_API_KEY",
+                    "task": "evol_instruct"
+                  }
+                },
+                "Preference Data Augmentation Example": {
+                  "summary": "Example for preference data augmentation task",
+                  "value": {
+                    "data_config": {
+                      "data_path": "distilabel-internal-testing/instruction-dataset-mini",
+                      "data_source_type": "hub_link",
+                      "data_subset": null,
+                      "prompt_column_name": "prompt",
+                      "split": "test"
+                    },
+                    "generate_model1_name": "gpt-3.5-turbo",
+                    "generate_model2_name": "gpt-3.5-turbo",
+                    "judge_model_name": "gpt-4-turbo",
+                    "num_evolutions": 2,
+                    "openai_api_key": "YOUR_OPENAI_API_KEY",
+                    "task": "preference_data_augmentation"
+                  }
+                }
+              },
+              "schema": {
+                "properties": {
+                  "data_config": {
+                    "properties": {
+                      "data_path": {
+                        "description": "Path to the dataset. Can be a Hugging Face Hub link or an S3 bucket path.",
+                        "example": "distilabel-internal-testing/instruction-dataset-mini",
+                        "type": "string"
+                      },
+                      "data_source_type": {
+                        "default": "hub_link",
+                        "description": "Type of the data source: either from Hugging Face Hub or an S3 bucket.",
+                        "enum": [
+                          "hub_link",
+                          "s3_presigned_link"
+                        ],
+                        "type": "string"
+                      },
+                      "data_subset": {
+                        "default": null,
+                        "description": "Optional subset of the dataset to focus on.",
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "prompt_column_name": {
+                        "default": "prompt",
+                        "description": "Column name in the dataset to use for prompts.",
+                        "type": "string"
+                      },
+                      "split": {
+                        "default": "train",
+                        "description": "Data split to use (e.g., train, test, validation).",
+                        "example": "test",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "data_path",
+                      "data_source_type"
+                    ],
+                    "type": "object"
+                  },
+                  "generate_model1_name": {
+                    "default": "gpt-3.5-turbo",
+                    "description": "Name of the first generative model used for data augmentation.",
+                    "type": "string"
+                  },
+                  "generate_model2_name": {
+                    "default": "gpt-3.5-turbo",
+                    "description": "Name of the second generative model used for data augmentation.",
+                    "type": "string"
+                  },
+                  "judge_model_name": {
+                    "default": "gpt-4-turbo",
+                    "description": "Name of the model used to judge or evaluate the generated data.",
+                    "type": "string"
+                  },
+                  "num_evolutions": {
+                    "default": 5,
+                    "description": "Number of times the data should be evolved or augmented.",
+                    "format": "int32",
+                    "type": "integer"
+                  },
+                  "openai_api_key": {
+                    "default": "YOUR_OPENAPI_KEY",
+                    "description": "API key for authentication with the OpenAI service.",
+                    "type": "string"
+                  },
+                  "task": {
+                    "default": "evol_instruct",
+                    "description": "The task to perform: evolving instructions or generating preference data.",
+                    "enum": [
+                      "evol_instruct",
+                      "preference_data_augmentation"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "data_config",
+                  "task",
+                  "generate_model1_name",
+                  "generate_model2_name",
+                  "judge_model_name",
+                  "num_evolutions",
+                  "openai_api_key"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Data Augmentation Service",
+        "tags": [
+          "Data Augmentation Models"
+        ]
+      }
+    },
+    "/generate/img2img": {
+      "post": {
+        "description": "Image to Image API allows you to generate that resembles an original image provided by you, using stable diffusion model.\n  \nImage to Image model requires a text prompt and an initial image url as the inputs to render a new image which has similar style and content to the initial image, but different details and composition.\n\nMake sure to use <a href='https://developer.monsterapi.ai/reference/get_status-process-id'>Fetch Results API</a> after **process_id** is received \n\nThis API supports file uploads upto 8MB. For larger files checkout our Recipe Below\n\nThis API supports following use-cases:\n  - Want to upload a file < 8MB: Checkout `Image2Image - Sample Code` Recipe\n  - Want to upload a file > 8MB: Checkout `File Upload > 8MB` Recipe\n  - Want to send file url instead of upload: Checkout `Image2Image File URL` Recipe\n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "guidance_scale": {
+                    "description": "Prompt guidance scale",
+                    "example": 7.5,
+                    "format": "float",
+                    "maximum": 50,
+                    "minimum": 5,
+                    "type": "number"
+                  },
+                  "init_image_url": {
+                    "description": "Input Image File",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "negprompt": {
+                    "description": "Negative text prompt for output image",
+                    "example": "deformed, bad anatomy, disfigured, poorly drawn face",
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "description": "Input prompt to create output image",
+                    "example": "a fantasy wonderland",
+                    "type": "string"
+                  },
+                  "seed": {
+                    "description": "Randum number used to initialize the image generation",
+                    "example": 2414,
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "steps": {
+                    "description": "Sampling steps per image",
+                    "example": 30,
+                    "format": "int64",
+                    "maximum": 500,
+                    "minimum": 30,
+                    "type": "integer"
+                  },
+                  "strength": {
+                    "description": "Controls how much the original image will be modified",
+                    "example": 0.75,
+                    "format": "float",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "init_image_url",
+                  "prompt"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Image to Image",
+        "tags": [
+          "Image Gen Models"
+        ]
+      }
+    },
+    "/generate/photo-maker": {
+      "post": {
+        "description": "Photomaker API allows you to create realistic customizations of input images. \n\nPhotomaker developed by [Tencent ARC Lab](https://github.com/TencentARC/PhotoMaker) enables the encoding of multiple input ID images into a unified representation.\n\nThe model requires a text prompt and an reference image as an input to render images that are conditioned on your provided text prompt.\n\nMake sure to use <a href='https://developer.monsterapi.ai/reference/get_status-process-id'>Fetch Results API</a> after **process_id** is received \n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "init_image_url": {
+                    "description": "Input Image File. Supported Formats: `.jpg, .jpeg, .png`\n",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "negprompt": {
+                    "description": "Negative text prompt for output image",
+                    "example": "deformed, bad anatomy, disfigured, poorly drawn face",
+                    "type": "string"
+                  },
+                  "optimize": {
+                    "default": false,
+                    "description": "When the \"optimize\" is set to true, the model operates in an optimized mode, enhancing the speed of its processing. This allows for quicker inference times.",
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "prompt": {
+                    "description": "Input prompt to create output image",
+                    "example": "a man wearing a leather jacket",
+                    "type": "string"
+                  },
+                  "safe_filter": {
+                    "default": true,
+                    "description": "When the \"safe_filter\" is set to true, the model will actively filter out any potential NSFW (Not Safe for Work) content, ensuring a safer and more appropriate experience for users. However, it is important to note that the Safe Filter is not foolproof, and users must remain vigilant and take necessary steps to comply with the platform's Terms of Service.",
+                    "example": true,
+                    "type": "boolean"
+                  },
+                  "samples": {
+                    "description": "No. of images to be generated",
+                    "example": 1,
+                    "format": "int64",
+                    "maximum": 3,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "seed": {
+                    "description": "Random number used to initialize the image generation. Use the same seed for reproducability",
+                    "example": 2414,
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "steps": {
+                    "description": "Number of sampling steps (more steps can lead to better results but it also leads to higher processing time)",
+                    "example": 30,
+                    "format": "int64",
+                    "maximum": 60,
+                    "minimum": 10,
+                    "type": "integer"
+                  },
+                  "strength": {
+                    "description": "It defines how much the output image should follow your provided initial image",
+                    "example": 30,
+                    "format": "int64",
+                    "maximum": 60,
+                    "minimum": 10,
+                    "type": "integer"
+                  },
+                  "style": {
+                    "description": "Use this parameter to steer the image generation model toward a specific style",
+                    "enum": [
+                      "enhance",
+                      "anime",
+                      "photographic",
+                      "digital-art",
+                      "comic-book",
+                      "fantasy-art",
+                      "analog-film",
+                      "neonpunk",
+                      "isometric",
+                      "lowpoly",
+                      "origami",
+                      "line-art",
+                      "craft-clay",
+                      "cinematic",
+                      "3d-model",
+                      "pixel-art",
+                      "texture",
+                      "futuristic",
+                      "realism",
+                      "watercolor",
+                      "photorealistic"
+                    ],
+                    "example": "anime",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt",
+                  "init_image_url"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "PhotoMaker",
+        "tags": [
+          "Image Gen Models"
+        ]
+      }
+    },
+    "/generate/pix2pix": {
+      "post": {
+        "description": "Pix2Pix API allows you to edit any image by using simple text instructions. This API uses Instruct-pix2pix model made by [Timothy Brooks](https://www.timothybrooks.com/instruct-pix2pix/).\n\nPix2Pix model requires a text prompt and an initial image url as the inputs to render a new image which has similar style and content to the initial image, but different details and composition.\n\nMake sure to use <a href='https://developer.monsterapi.ai/reference/get_status-process-id'>Fetch Results API</a> after **process_id** is received \n\nThis API supports following use-cases:\n  - Want to upload a file < 8MB: Checkout `Pix2Pix - Sample Code` Recipe\n  - Want to upload a file > 8MB: Checkout `File Upload > 8MB` Recipe\n  - Want to send file url instead of upload: Checkout `Pix2Pix File URL` Recipe\n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "guidance_scale": {
+                    "description": "It defines how much the output image should follow your text prompt",
+                    "example": 12.5,
+                    "format": "float",
+                    "maximum": 50,
+                    "minimum": 5,
+                    "type": "number"
+                  },
+                  "image_guidance_scale": {
+                    "description": "It defines how much the output image should follow your provided initial image",
+                    "example": 1.5,
+                    "format": "float",
+                    "maximum": 5,
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "init_image_url": {
+                    "description": "Input Image File. Supported Formats: `.jpg, .jpeg, .png`\n",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "negprompt": {
+                    "description": "Negative text prompt for output image",
+                    "example": "deformed, bad anatomy, disfigured, poorly drawn face",
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "description": "Input prompt to create output image",
+                    "example": "add snow on the street",
+                    "type": "string"
+                  },
+                  "seed": {
+                    "description": "Randum number used to initialize the image generation",
+                    "example": 2414,
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "steps": {
+                    "description": "Number of sampling steps (more steps can lead to better results but it also leads to higher cost)",
+                    "example": 50,
+                    "format": "int64",
+                    "maximum": 500,
+                    "minimum": 30,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "prompt",
+                  "init_image_url"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Instruct-pix2pix",
+        "tags": [
+          "Image Gen Models"
+        ]
+      }
+    },
+    "/generate/sdxl-base": {
+      "post": {
+        "description": "SDXL 1.0 is the flagship image model from Stability AI and the best open model for image generation\nThe SDXL Model can generate images of high quality in virtually any art style and is the best open model for photorealism.\n\nThe model requires a text prompt as an input to render images that are conditioned on your provided text prompt.\n\nMake sure to use <a href='https://developer.monsterapi.ai/reference/get_status-process-id'>Fetch Results API</a> after **process_id** is received \n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "aspect_ratio": {
+                    "description": "orientiation of output",
+                    "enum": [
+                      "square",
+                      "portrait",
+                      "landscape"
+                    ],
+                    "example": "square",
+                    "type": "string"
+                  },
+                  "enhance": {
+                    "default": false,
+                    "description": "When the \"enhance\" is set to true, the model focuses on improving the quality of the image output. This setting can work well in conjunction with the \"optimize\" setting, allowing for a balance between speed and quality.",
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "guidance_scale": {
+                    "description": "It defines how much the output image should follow your text prompt",
+                    "example": 7.5,
+                    "format": "float",
+                    "maximum": 50,
+                    "minimum": 5,
+                    "type": "number"
+                  },
+                  "negprompt": {
+                    "description": "Negative text prompt for output image",
+                    "example": "deformed, bad anatomy, disfigured, poorly drawn face",
+                    "type": "string"
+                  },
+                  "optimize": {
+                    "default": false,
+                    "description": "When the \"optimize\" is set to true, the model operates in an optimized mode, enhancing the speed of its processing. This allows for quicker inference times.",
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "prompt": {
+                    "description": "Input prompt to create output image",
+                    "example": "detailed sketch of lion by greg rutkowski, beautiful, intricate, ultra realistic, elegant, art by artgerm",
+                    "type": "string"
+                  },
+                  "safe_filter": {
+                    "default": true,
+                    "description": "When the \"safe_filter\" is set to true, the model will actively filter out any potential NSFW (Not Safe for Work) content, ensuring a safer and more appropriate experience for users. However, it is important to note that the Safe Filter is not foolproof, and users must remain vigilant and take necessary steps to comply with the platform's Terms of Service.",
+                    "example": true,
+                    "type": "boolean"
+                  },
+                  "samples": {
+                    "description": "No. of images to be generated",
+                    "example": 2,
+                    "format": "int64",
+                    "maximum": 4,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "seed": {
+                    "description": "Random number used to initialize the image generation",
+                    "example": 2414,
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "steps": {
+                    "description": "Number of sampling steps (more steps can lead to better results but it also leads to higher cost)",
+                    "example": 50,
+                    "format": "int64",
+                    "maximum": 500,
+                    "minimum": 30,
+                    "type": "integer"
+                  },
+                  "style": {
+                    "description": "Use this parameter to steer the image generation model toward a specific style",
+                    "enum": [
+                      "enhance",
+                      "anime",
+                      "photographic",
+                      "digital-art",
+                      "comic-book",
+                      "fantasy-art",
+                      "analog-film",
+                      "neonpunk",
+                      "isometric",
+                      "lowpoly",
+                      "origami",
+                      "line-art",
+                      "craft-clay",
+                      "cinematic",
+                      "3d-model",
+                      "pixel-art",
+                      "texture",
+                      "futuristic",
+                      "realism",
+                      "watercolor",
+                      "photorealistic"
+                    ],
+                    "example": "anime",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Text to Image SDXL",
+        "tags": [
+          "Image Gen Models"
+        ]
+      }
+    },
+    "/generate/speech2text-v2": {
+      "post": {
+        "description": "Speech to Text v2 API allows you to transcribe any audio file using OpenAI-Whisper Large-v3 model.\n  \nOpenAI Whisper is an open-source automatic speech recognition (ASR) system trained on 680,000 hours of multilingual and multitask supervised data collected from the web.\n\nThe large-v3 model shows improved performance over a wide variety of languages, showing 10% to 20% reduction of errors compared to Whisper large-v2.\n\nMake sure to use <a href='https://developer.monsterapi.ai/reference/get_status-process-id'>Fetch Results API</a> after **process_id** is received \n\nThis API supports following use-cases:\n  - Want to upload a file < 8MB: Checkout `Whisper - Sample Code` Recipe\n  - Want to upload a file > 8MB: Checkout `File Upload > 8MB` Recipe\n  - Want to send file url instead of upload: Checkout `Whisper File URL` Recipe\n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "diarize": {
+                    "description": "Employs an embedding model to identify speakers, along with their respective transcripts and durations",
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "do_sample": {
+                    "default": true,
+                    "description": "Whether or not to use sampling ; use greedy decoding otherwise. When set to True, this parameter enables decoding strategies such as beam-search multinomial sampling, Top-K sampling and Top-p sampling etc. All these strategies select the next token from the probability distribution over the entire vocabulary with various strategy-specific adjustments.",
+                    "example": true,
+                    "type": "boolean"
+                  },
+                  "file": {
+                    "description": "Input audio or video file. Size upto 8MB.\nsupported file formats: `m4a, mp3, mp4, mpeg, mpga, wav, webm, ogg`\n",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "language": {
+                    "description": "Defines the language for transcription output. Translates the transcript to your preferred language\n<br>Allowed options:  <br>`'af', 'am', 'ar', 'as', 'az', 'ba', 'be', 'bg', 'bn', 'bo', 'br', 'bs', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'en', 'es', 'et', 'eu', 'fa', 'fi', 'fo', 'fr', 'gl', 'gu', 'ha', 'haw', 'he', 'hi', 'hr', 'ht', 'hu', 'hy', 'id', 'is', 'it', 'ja', 'jw', 'ka', 'kk', 'km', 'kn', 'ko', 'la', 'lb', 'ln', 'lo', 'lt', 'lv', 'mg', 'mi', 'mk', 'ml', 'mn', 'mr', 'ms', 'mt', 'my', 'ne', 'nl', 'nn', 'no', 'oc', 'pa', 'pl', 'ps', 'pt', 'ro', 'ru', 'sa', 'sd', 'si', 'sk', 'sl', 'sn', 'so', 'sq', 'sr', 'su', 'sv', 'sw', 'ta', 'te', 'tg', 'th', 'tk', 'tl', 'tr', 'tt', 'uk', 'ur', 'uz', 'vi', 'yi', 'yo', 'zh'`\n",
+                    "example": "en",
+                    "type": "string"
+                  },
+                  "num_speakers": {
+                    "description": "Number of speakers present in the audio file. Used in conjunction with the \"diarize\" parameter, which enables speaker diarization. Provide an accurate value to achieve precise speaker identification.",
+                    "example": "None",
+                    "maximum": 10,
+                    "minimum": 2,
+                    "type": "integer"
+                  },
+                  "repetition_penalty": {
+                    "default": 0.9,
+                    "description": "The model uses this penalty to discourage the repetition of tokens in the output",
+                    "example": 0.9,
+                    "format": "float",
+                    "maximum": 1.5,
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "temperature": {
+                    "default": 0.9,
+                    "description": "The value used to modulate the next token probabilities.",
+                    "example": 0.9,
+                    "format": "float",
+                    "maximum": 1.5,
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "top_k": {
+                    "default": 50,
+                    "description": "The number of highest probability vocabulary tokens to keep for top-k-filtering.",
+                    "example": 50,
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "top_p": {
+                    "default": 0.9,
+                    "description": "Top-p sampling helps generate more diverse and creative text by considering a broader range of tokens",
+                    "example": 0.9,
+                    "format": "float",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "transcription_format": {
+                    "description": "Defines the output format.",
+                    "enum": [
+                      "text",
+                      "srt"
+                    ],
+                    "example": "text",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Speech to Text v2 - Whisper Large-v3",
+        "tags": [
+          "Speech Models"
+        ]
+      }
+    },
+    "/generate/sunoai-bark": {
+      "post": {
+        "description": "Text to Speech API allows you to convert text to an audio file using Suno AI Bark model.\n\nBark is a transformer-based text-to-audio model created by [Suno](https://suno.ai/). Bark can generate highly realistic, multilingual speech as well as other audio - including music, background noise and simple sound effects.\n\nAPI supports generating audio files of extended length (upto 60 min)\nDifferent sample rates, speaker, text and waveform temperature will result in different quality or texture of voice in the output audio file\n\nMake sure to use <a href='https://developer.monsterapi.ai/reference/get_status-process-id'>Fetch Results API</a> after **process_id** is received\n\nThis API supports following use-cases:\n  - Want to upload a file < 8MB: Checkout `Sunoai Bark - Sample Code` Recipe\n  - Want to upload a file > 8MB: Checkout `File Upload > 8MB` Recipe\n  - Want to send file url instead of upload: Checkout `Sunoai Bark File URL` Recipe\n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "description": "file that needs to be cloned. \nSupported file formats: `m4a, mp3, mp4, mpeg, mpga, wav, webm, ogg`. \nThis parameter is utilized exclusively alongside the voice_clone functionality\n",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "description": "Input prompt to create output audio file",
+                    "example": "What's the meaning of life?",
+                    "type": "string"
+                  },
+                  "sample_rate": {
+                    "description": "Sampling rate for output audio",
+                    "example": 25000,
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "speaker": {
+                    "description": "Defines the language and speaker for speech. \nAccepted Format: `{language}_speaker_{number}`\nSupported Languages: \n`'de': 'German',   'en': 'English',   'es': 'Spanish',   'fr': 'French',   'hi': 'Hindi',   'it': 'Italian',   'ja': 'Japanese',   'ko': 'Korean',   'pl': 'Polish',   'pt': 'Portuguese',   'ru': 'Russian',   'tr': 'Turkish',   'zh': 'Chinese'`\nSupported numbers: 0 to 9\n",
+                    "example": "en_speaker_6",
+                    "type": "string"
+                  },
+                  "text_temp": {
+                    "description": "Temperature setting for text prompt",
+                    "example": 0.5,
+                    "format": "float",
+                    "maximum": 1,
+                    "minimum": 0.1,
+                    "type": "number"
+                  },
+                  "voice_clone": {
+                    "default": false,
+                    "description": "When the voice_clone parameter is set to True, the model attempts to replicate the vocal characteristics of the speaker, aiming to generate an audio file that closely emulates the original voice.\nPlease note that the accuracy of this emulation can vary\n",
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "wave_temp": {
+                    "description": "Temperature setting for audio waveform",
+                    "example": 0.5,
+                    "format": "float",
+                    "maximum": 1,
+                    "minimum": 0.1,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Text to Speech - Bark",
+        "tags": [
+          "Speech Models"
+        ]
+      }
+    },
+    "/generate/txt2img": {
+      "post": {
+        "description": "Text to image API allows you to generate an image that looks similar to your provided text prompt using Pix-Art-Sigma Model.\n  \nText to Image model requires a text prompt as an input to render images that are conditioned on your provided text prompt.\n\nMake sure to use <a href='https://developer.monsterapi.ai/reference/get_status-process-id'>Fetch Results API</a> after **process_id** is received \n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "aspect_ratio": {
+                    "description": "orientiation of output",
+                    "enum": [
+                      "square",
+                      "portrait",
+                      "landscape"
+                    ],
+                    "example": "square",
+                    "type": "string"
+                  },
+                  "guidance_scale": {
+                    "description": "It defines how much the output image should follow your text prompt",
+                    "example": 7.5,
+                    "format": "float",
+                    "maximum": 50,
+                    "minimum": 5,
+                    "type": "number"
+                  },
+                  "negprompt": {
+                    "description": "Negative text prompt for output image",
+                    "example": "deformed, bad anatomy, disfigured, poorly drawn face",
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "description": "Input prompt to create output image",
+                    "example": "detailed sketch of lion by greg rutkowski, beautiful, intricate, ultra realistic, elegant, art by artgerm",
+                    "type": "string"
+                  },
+                  "safe_filter": {
+                    "default": true,
+                    "description": "When the \"safe_filter\" is set to true, the model will actively filter out any potential NSFW (Not Safe for Work) content, ensuring a safer and more appropriate experience for users. However, it is important to note that the Safe Filter is not foolproof, and users must remain vigilant and take necessary steps to comply with the platform's Terms of Service.",
+                    "example": true,
+                    "type": "boolean"
+                  },
+                  "samples": {
+                    "description": "No. of images to be generated",
+                    "example": 1,
+                    "format": "int64",
+                    "maximum": 4,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "seed": {
+                    "description": "Randum number used to initialize the image generation",
+                    "example": 2414,
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "steps": {
+                    "description": "Number of sampling steps (more steps can lead to better results but it also leads to higher cost)",
+                    "example": 15,
+                    "format": "int64",
+                    "maximum": 500,
+                    "minimum": 30,
+                    "type": "integer"
+                  },
+                  "style": {
+                    "description": "Use this parameter to steer the image generation model toward a specific style",
+                    "enum": [
+                      "enhance",
+                      "anime",
+                      "photographic",
+                      "digital-art",
+                      "comic-book",
+                      "fantasy-art",
+                      "analog-film",
+                      "neonpunk",
+                      "isometric",
+                      "lowpoly",
+                      "origami",
+                      "line-art",
+                      "craft-clay",
+                      "cinematic",
+                      "3d-model",
+                      "pixel-art",
+                      "texture",
+                      "futuristic",
+                      "realism",
+                      "watercolor",
+                      "photorealistic"
+                    ],
+                    "example": "anime",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "prompt"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Text to Image",
+        "tags": [
+          "Image Gen Models"
+        ]
+      }
+    },
+    "/generate/whisper": {
+      "post": {
+        "description": "Speech to Text API allows you to transcribe any audio file using OpenAI-Whisper Large-v2 model.\n  \nOpenAI Whisper is an open-source automatic speech recognition (ASR) system trained on 680,000 hours of multilingual and multitask supervised data collected from the web.\n  `Large-v2` is a biggest version of whisper model and offers superior transcription quality.\n\nMake sure to use <a href='https://developer.monsterapi.ai/reference/get_status-process-id'>Fetch Results API</a> after **process_id** is received \n\nThis API supports following use-cases:\n  - Want to upload a file < 8MB: Checkout `Whisper - Sample Code` Recipe\n  - Want to upload a file > 8MB: Checkout `File Upload > 8MB` Recipe\n  - Want to send file url instead of upload: Checkout `Whisper File URL` Recipe\n",
+        "parameters": [
+          {
+            "description": "Webhook URL name to get task status. These webhooks should be registered with Monster API",
+            "in": "query",
+            "name": "webhook_url_name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "beam_size": {
+                    "default": 5,
+                    "description": "Controls the breadth of the search for the best transcription.\nA larger beam size results in better quality output, but slower inference times.\n",
+                    "example": 5,
+                    "maximum": 100,
+                    "minimum": 1
+                  },
+                  "best_of": {
+                    "default": 8,
+                    "description": "Determines the number of diverse transcription versions generated and considered, useful for exploring different audio interpretations\n",
+                    "example": 8,
+                    "minimum": 1
+                  },
+                  "diarize": {
+                    "description": "Employs an embedding model to identify speakers, along with their respective transcripts and durations",
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "file": {
+                    "description": "Input audio or video file. Size upto 8MB.\nsupported file formats: `m4a, mp3, mp4, mpeg, mpga, wav, webm, ogg`\n",
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "language": {
+                    "description": "Defines the language for transcription output. Translates the transcript to your preferred language\n<br>Allowed options:  <br>`'af', 'am', 'ar', 'as', 'az', 'ba', 'be', 'bg', 'bn', 'bo', 'br', 'bs', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'en', 'es', 'et', 'eu', 'fa', 'fi', 'fo', 'fr', 'gl', 'gu', 'ha', 'haw', 'he', 'hi', 'hr', 'ht', 'hu', 'hy', 'id', 'is', 'it', 'ja', 'jw', 'ka', 'kk', 'km', 'kn', 'ko', 'la', 'lb', 'ln', 'lo', 'lt', 'lv', 'mg', 'mi', 'mk', 'ml', 'mn', 'mr', 'ms', 'mt', 'my', 'ne', 'nl', 'nn', 'no', 'oc', 'pa', 'pl', 'ps', 'pt', 'ro', 'ru', 'sa', 'sd', 'si', 'sk', 'sl', 'sn', 'so', 'sq', 'sr', 'su', 'sv', 'sw', 'ta', 'te', 'tg', 'th', 'tk', 'tl', 'tr', 'tt', 'uk', 'ur', 'uz', 'vi', 'yi', 'yo', 'zh'`\n",
+                    "example": "en",
+                    "type": "string"
+                  },
+                  "num_speakers": {
+                    "description": "Number of speakers present in the audio file. Used in conjunction with the \"diarize\" parameter, which enables speaker diarization. Provide an accurate value to achieve precise speaker identification.",
+                    "example": "None",
+                    "maximum": 10,
+                    "minimum": 2,
+                    "type": "integer"
+                  },
+                  "prompt": {
+                    "description": "Input prompt for Audio files",
+                    "example": "",
+                    "type": "string"
+                  },
+                  "remove_silence": {
+                    "description": "Remove silence from Audio files before processing",
+                    "example": false,
+                    "type": "boolean"
+                  },
+                  "transcription_format": {
+                    "description": "Defines the output format.",
+                    "enum": [
+                      "text",
+                      "srt",
+                      "word",
+                      "verbose"
+                    ],
+                    "example": "text",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "callback_url": {
+                      "description": "Callback URL for status update",
+                      "example": "",
+                      "type": "string"
+                    },
+                    "message": {
+                      "example": "Request Accepted Successfully",
+                      "type": "string"
+                    },
+                    "process_id": {
+                      "example": "aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    },
+                    "status_url": {
+                      "example": "https://api.monsterapi.ai/v1/status/aaaaaa-bbbbbb-cc-ggh",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Successful Operation"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Invalid Payload | Payload missing",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unauthorised",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unauthorised"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Insufficient Credits. Please recharge...",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "415": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Unsupported Media",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Unsupported Media Type"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Quota Exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Too Many requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "example": "Internal Server Error",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "xml": {
+                    "name": "##default"
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Speech to Text - Whisper",
+        "tags": [
+          "Speech Models"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Monster Generative AI",
+      "url": "https://api.monsterapi.ai/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "LLM Models"
+    },
+    {
+      "name": "Image Gen Models"
+    },
+    {
+      "name": "Speech Models"
+    }
+  ],
+  "x-samples-languages": [
+    "shell",
+    "python",
+    "node"
+  ]
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { Button } from "./button"
 import Modebutton from './modebutton'
+import Upgrade from './upgrade'
 
 
 const Sidebar2 = () => {
@@ -38,9 +39,7 @@ const Sidebar2 = () => {
           </div>
           <div className="space-y-4">
             <Modebutton/>
-            <Button variant="outline" size="sm" className="w-full">
-              Upgrade to Pro
-            </Button>
+            <Upgrade />
             <div className="flex gap-2 text-sm justify-center">
               <GlobeIcon className="h-5 w-5" />
               <span>English</span>

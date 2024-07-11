@@ -8,13 +8,11 @@ import {
   SelectValue,
 } from "../components/ui/select"
 
-interface SelectModelProps {
-  onModelChange: (value: string) => void
-}
 
-export function SelectModel({ onModelChange }: SelectModelProps) {
+
+export function SelectModel() {
   return (
-    <Select onValueChange={onModelChange}>
+    <Select>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select Model" />
       </SelectTrigger>

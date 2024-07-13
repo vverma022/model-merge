@@ -9,10 +9,10 @@ const Modebutton = () => {
     const handleModeChange = () => {
         if (theme === "light") {
             setTheme("dark")
-            setMode("Light ")
+            setMode("Light Mode")
         } else {
             setTheme("light")
-            setMode("Dark")
+            setMode("Dark Mode")
         }
     }
 

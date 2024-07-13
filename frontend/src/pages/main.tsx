@@ -4,6 +4,7 @@ import { Input } from "../components/ui/input"
 import { SelectModel } from "../maincomponents/selectmodel"
 
 
+
 const Main = () => {
     return (
       <>

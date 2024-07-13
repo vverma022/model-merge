@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom"
 import { Button } from "../../components/ui/button"
-import { Sheet, SheetTrigger, SheetContent } from "../../components/ui/sheet"
-import Main from "../../pages/main"
 import LogoIcon from "../../assets/logo"
 import ModeButton from "./modebutton"
 

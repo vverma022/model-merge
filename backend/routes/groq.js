@@ -9,6 +9,7 @@ const groq = new Groq({apiKey: process.env.LLAMA_API_KEY});
 
 router.post('/chat', async (req, res) => {
     const userMessage = req.body.message;
+    const model = req.body.model;
   
     if (!userMessage) {
       return res.status(400).json({ error: 'Message is required' });
@@ -19,11 +20,11 @@ router.post('/chat', async (req, res) => {
         messages: [
           {
             role: "user",
-            content: userMessage,
+            content: userMessage
           },
         ],
         model: "mixtral-8x7b-32768",
-        max_tokens: 100,
+        max_tokens: 500,
       });
   
       const aiResponse = completion.choices[0]?.message?.content || "";

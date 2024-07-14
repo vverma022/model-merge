@@ -1,6 +1,7 @@
 import express from 'express';
 import { configDotenv } from 'dotenv';
 import { CohereClient } from 'cohere-ai';
+import cors from 'cors';
 configDotenv();
 
 const router = express.Router();

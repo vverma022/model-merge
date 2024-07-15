@@ -50,6 +50,37 @@
   }
 }
 
+/* Add this CSS to your stylesheet */
+/* Add this CSS to your stylesheet */
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: black; }
+}
+
+.typewriter-container {
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  border-right: 2px solid black;
+  overflow: hidden;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+.wrap {
+  white-space: pre-wrap;
+}
+
+.output-area {
+  max-width: calc(100% - 64px); /* Adjust the width minus the width of the sidebar */
+  max-height: calc(100vh - 80px); /* Adjust the maximum height as needed */
+  overflow: auto; /* Add scrollbars if content overflows */
+}
 
   @layer base {
     * {

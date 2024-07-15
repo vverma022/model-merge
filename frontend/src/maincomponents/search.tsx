@@ -18,20 +18,25 @@ const Search = ({SetResponse}: SearchProps) => {
       alert("Please select a model and enter a prompt");
       return;
     }
-    try{
-      const response = await axios.post("http://localhost:6030/api/chat",{
-        message: Prompt
-      });
-      console.log(response.data.message);
-      SetResponse(response.data.response);
-    }catch(error){
-        console.error("Error sending request to the server");
+    let endpoint = "http://localhost:6030/api/chat";
+    if(SelectedModel === "Command-R-Plus"){
+      endpoint = "http://localhost:6030/api4/chat";
     }
+      try{
+        const response = await axios.post(endpoint,{
+          message: Prompt,
+          model: SelectedModel === "Mistral" ? "mixtral-8x7b-32768" : SelectedModel === "llama-3" ? "llama3-70b-8192" : SelectedModel === "Command-R-Plus" ? "command-r" : ""
+        });
+        console.log(response.data.message);
+        SetResponse(response.data.response);
+      }catch(error){
+          console.error("Error sending request to the server");
+      }
   };
 
   return (
     <div className="flex w-full flex-row p-2">
-      <form onSubmit={handleSubmit} className='flex'>
+      <form onSubmit={handleSubmit} className='flex w-full'>
         <div>
           <SelectModel onChange={SetSelectedModel}  />
         </div>

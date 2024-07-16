@@ -49,6 +49,14 @@ Install dependencies
   npm install
 ```
 
+Create a new .env file
+
+If in Linux environment:
+
+```
+touch .env
+```
+
 Start the server
 
 ```bash
@@ -75,7 +83,7 @@ Start the server
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
+To run this project, you will need to add the following environment variables to the .env file in `backend` dir
 
 `GEMINI_API_Key`
 

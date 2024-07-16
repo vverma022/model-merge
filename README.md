@@ -85,13 +85,13 @@ Start the server
 
 To run this project, you will need to add the following environment variables to the .env file in `backend` dir
 
-`GEMINI_API_Key`
+`GEMINI_API_KEY`
 
 `COHERE_API_KEY`
 
-`AI_ML_API_Key`
+`AI_ML_API_KEY`
 
-`GROQ_API_Key`
+`GROQ_API_KEY`
 
 ## Running Tests
 

@@ -24,10 +24,10 @@ Before you begin, ensure you have the following,
 
     •	Node.js installed on your machine
     •	API keys from the following services:
-    •	Gemini
-    •	Cohere
-    •	Grow
-    •	AIMLapi
+    •	Gemini from https://ai.google.dev/gemini-api/docs/api-key
+    •	Cohere from https://docs.cohere.com/
+    •	Groq from https://console.groq.com/keys
+    •	AIMLapi from https://aimlapi.com/app/sign-up/
 
 ## Run Locally
 
@@ -78,7 +78,7 @@ Install dependencies
 Start the server
 
 ```bash
-  npm run start
+  npm run dev
 ```
 
 ## Environment Variables
@@ -91,7 +91,7 @@ To run this project, you will need to add the following environment variables to
 
 `AI_ML_API_KEY`
 
-`GROQ_API_KEY`
+`LLAMA_API_KEY`
 
 ## Running Tests
 

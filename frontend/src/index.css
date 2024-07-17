@@ -1,8 +1,7 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
-  
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -53,14 +52,35 @@
 /* Add this CSS to your stylesheet */
 /* Add this CSS to your stylesheet */
 
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
+/* @keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 @keyframes blink-caret {
-  from, to { border-color: transparent; }
-  50% { border-color: black; }
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+} */
+
+@keyframes flicker {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .typewriter-container {
@@ -69,7 +89,14 @@
   white-space: nowrap;
   border-right: 2px solid black;
   overflow: hidden;
-  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  /* animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite; */
+}
+
+/* Added a classname for the span element that displays the cursor in main.tsx */
+.cursor {
+  display: inline-block;
+  width: 5px;
+  animation: flicker 0.5s step-end infinite;
 }
 
 .wrap {
@@ -77,23 +104,25 @@
 }
 
 .output-area {
-  max-width: calc(100% - 64px); /* Adjust the width minus the width of the sidebar */
+  max-width: calc(
+    100% - 64px
+  ); /* Adjust the width minus the width of the sidebar */
   max-height: calc(100vh - 80px); /* Adjust the maximum height as needed */
   overflow: auto; /* Add scrollbars if content overflows */
 }
 
-  @layer base {
-    * {
-      @apply border-border;
-      @apply font-mono;
-    }
-    body {
-      @apply bg-background text-foreground;
-    }
+@layer base {
+  * {
+    @apply border-border;
+    @apply font-mono;
   }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
 
-  @utilities {
-    .text-main{
-      @apply text-primary;
-    }
+@utilities {
+  .text-main {
+    @apply text-primary;
   }
+}

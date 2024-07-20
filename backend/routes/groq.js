@@ -24,7 +24,7 @@ router.post('/chat', async (req, res) => {
           },
         ],
         model: "mixtral-8x7b-32768",
-        max_tokens: 500,
+        max_tokens: 50,
       });
   
       const aiResponse = completion.choices[0]?.message?.content || "";

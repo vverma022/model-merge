@@ -10,10 +10,12 @@ const Main = ({ typewriterDelay }: MainPropsType) => {
   const [TextResponse, SetTextResponse] = useState("");
   const [DisplayedText, setDisplayedText] = useState("");
   const [Typing, SetTyping] = useState(false);
+  const [Output, SetOutput] = useState(false);
 
   useEffect(() => {
     if (TextResponse) {
       SetTyping(true);
+      SetOutput(true);
       setDisplayedText("");
       let i = 0;
       const intervalId = setInterval(() => {
@@ -36,42 +38,22 @@ const Main = ({ typewriterDelay }: MainPropsType) => {
         <Sidebar2 />
       </div>
       <div className="flex-grow p-4 relative">
-        <div
-          className="output-area p-2 mb-4 border rounded-xl"
-          style={{
-            maxWidth: "calc(100% - 64px)",
-            maxHeight: "calc(100vh - 80px)",
-            overflow: "auto",
-          }}
-        >
+        <div>
           <div className="overflow-hidden max-w-full h-full">
-            <div className="w-auto h-auto">
+            {Output && (
+              <div className="w-auto h-auto border rounded-lg">
               <div className="typewriter-container">
-                <p
-                  className="wrap border-r-1 pr-1"
-                  style={{ maxHeight: "100%", overflow: "hidden" }}
-                >
-                  {DisplayedText}
-                  {Typing && <span className="cursor">|</span>}
-                </p>
-
-                {/* {Typing ? (
-                  <p
-                    className="wrap border-r-1 pr-1"
-                    style={{ maxHeight: "100%", overflow: "hidden" }}
-                  >
-                    {DisplayedText}
-                  </p>
-                ) : (
-                  <p
-                    className="wrap"
-                    style={{ maxHeight: "100%", overflow: "hidden" }}
-                  >
-                    {TextResponse}
-                  </p>
-                )} */}
-              </div>
+              <p
+                className="wrap border-r-1 pr-1 rounded-lg p-2"
+                style={{ maxHeight: "100%", overflow: "hidden"}}
+              >
+                {DisplayedText}
+                {Typing && <span className="cursor border">|</span>}
+              </p>
             </div>
+          </div>
+            )}
+           
           </div>
         </div>
         <div className="absolute inset-x-0 bottom-0 w-full p-2">

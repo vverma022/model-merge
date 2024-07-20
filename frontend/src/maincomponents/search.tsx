@@ -3,6 +3,7 @@ import { Button } from "../components/ui/button";
 import { SelectModel } from "./selectmodel";
 import React, { useState } from "react";
 import axios from "axios";
+import { SelectType } from "./selecttype";
 
 interface SearchProps {
   SetResponse: (response: string) => void;
@@ -11,7 +12,10 @@ interface SearchProps {
 const Search = ({ SetResponse }: SearchProps) => {
   const [Prompt, SetPrompt] = useState("");
   const [SelectedModel, SetSelectedModel] = useState("");
+  const [SelectedType, SetSelectedType] = useState("");
+  const [ShowType, SetShowType] = useState(false);
 
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!Prompt) {
@@ -40,12 +44,17 @@ const Search = ({ SetResponse }: SearchProps) => {
       console.error("Error sending request to the server");
     }
   };
+  
+  const handleModelChange = (model: string) => {
+    SetSelectedModel(model);
+    SetShowType(model === "SDXL 1.0");
+  };
 
   return (
     <div className="flex w-full flex-row p-2">
       <form onSubmit={handleSubmit} className="flex w-full">
         <div>
-          <SelectModel onChange={SetSelectedModel} />
+          <SelectModel onChange={handleModelChange}  />
         </div>
         <div className="flex w-full px-1">
           <Input
@@ -55,7 +64,12 @@ const Search = ({ SetResponse }: SearchProps) => {
             onChange={(e) => SetPrompt(e.target.value)}
           />
         </div>
-        <div>
+        {ShowType && (
+          <div>
+            <SelectType onChange={SetSelectedType} />
+          </div>
+        )}
+        <div className="px-1">
           <Button
             type="submit"
             className="w-28 bg-red-600 hover:bg-red-400 text-white"

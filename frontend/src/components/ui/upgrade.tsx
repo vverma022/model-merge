@@ -18,7 +18,9 @@ const Upgrade = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-                <AlertDialogCancel>OK</AlertDialogCancel>
+      <AlertDialogCancel>
+        OK
+        </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

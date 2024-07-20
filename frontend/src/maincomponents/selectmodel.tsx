@@ -28,7 +28,7 @@ export function SelectModel({onChange}: SelectModelProps) {
         </SelectGroup>
         <SelectGroup>
           <SelectLabel className="text-red-600">Image-Based</SelectLabel>
-          <SelectItem value="SDXL 1.0">Stable Diffusion-XL</SelectItem>
+          <SelectItem value="SDXL 1.0">SDXL-1.0</SelectItem>
           </SelectGroup>
       </SelectContent>
     </Select>

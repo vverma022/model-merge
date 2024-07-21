@@ -1,22 +1,39 @@
 import express from 'express';
-import configdotenv, { configDotenv } from 'dotenv';
-import monsterApi from '@api/monster-api';
+import  { configDotenv } from 'dotenv';
+import MonsterApiClient from "monsterapi";
 configDotenv();
 
 
 const router = express.Router();
 
-const client = new monsterApi(process.env.MONSTER_API_KEY);
+const client =  new  MonsterApiClient(process.env.MONSTER_API_KEY);
 
-router.post('/generate', async (req,res) => {
-  const { model, input } = req.body;
-  client.generate(model, input)
-  .then((response) => {
-    // Handle the response from the API
-    console.log('Generated content:', response);
-  })
-  .catch((error) => {
-    // Handle API errors
+router.post('/generate', async (req, res) => {
+  const { style, prompt } = req.body;
+
+  const input = {
+    prompt: prompt,
+    steps: 50,
+    aspect_ratio: 'square',
+    enhance: true,
+    optimize: true,
+    style: style
+  };
+
+  try {
+    const response = await client.generate('sdxl', input);
+    res.json({
+      success: true,
+      data: response
+    });
+  } catch (error) {
     console.error('Error:', error);
-  });
+    res.status(500).json({
+      success: false,
+      message: 'Failed to generate image',
+      error: error.message
+    });
+  }
 });
+
+export default router;

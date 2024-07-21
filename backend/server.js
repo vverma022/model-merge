@@ -5,6 +5,7 @@ import openai from './routes/openai.js';
 import cohere from './routes/cohere.js';
 import claude from './routes/claude.js';
 import cors from 'cors';
+import sdxl from './routes/monster.js';
 
 configDotenv();
 
@@ -21,6 +22,7 @@ app.use(express.json());
  app.use('/api2', openai);
  app.use('/api4', cohere);
  app.use('/api5', claude);
+ app.use('/api/img',sdxl)
 
 
 app.listen(port, () => {

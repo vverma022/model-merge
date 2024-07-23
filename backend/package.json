@@ -13,8 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.24.3",
-    "@api/monster-api": "file:.api/apis/monster-api",
     "@google/generative-ai": "^0.14.1",
+    "@prisma/client": "^5.17.0",
     "axios": "^1.7.2",
     "cohere-ai": "^7.10.6",
     "cors": "^2.8.5",
@@ -24,5 +24,8 @@
     "groq-sdk": "^0.5.0",
     "monsterapi": "^0.0.5",
     "nodemon": "^3.1.4"
+  },
+  "devDependencies": {
+    "prisma": "^5.17.0"
   }
 }

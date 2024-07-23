@@ -6,7 +6,8 @@ configDotenv();
 
 const router = express.Router();
 
-const client =  new  MonsterApiClient(process.env.MONSTER_API_KEY);
+const client = new MonsterApiClient(process.env.MONSTER_API_KEY);
+
 
 router.post('/generate', async (req, res) => {
   const { style, prompt } = req.body;

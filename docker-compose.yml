@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   frontend:
@@ -10,6 +9,8 @@ services:
       - "5173:5173"
     depends_on:
       - backend
+    networks:
+      - model_merge_network
 
   backend:
     container_name: backend
@@ -20,7 +21,10 @@ services:
       - "3000:3000"
     networks:
       - model_merge_network
-
+    environment:
+      - DATABASE_URL=your-database-url-here
+      - DIRECT_URL=your-direct-url-here
+    command: ["npm", "run", "start:dev"] # Or your preferred start command for development
 
 networks:
   model_merge_network:

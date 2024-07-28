@@ -12,9 +12,9 @@ const anthropic = new Anthropic({
 router.post('/chat', async (req,res) =>{
     try{
         const message = req.body.message;
-
+        const model = req.body.model;
         const response = await anthropic.messages.create({
-            model: "claude-3-sonnet-20240229",
+            model: model,
             max_tokens: 250,
             messages: [
                 {

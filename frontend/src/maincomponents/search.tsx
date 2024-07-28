@@ -25,6 +25,8 @@ const Search = ({ SetResponse }: SearchProps) => {
     let endpoint = "http://localhost:6030/api/chat";
     if (SelectedModel === "Command-R-Plus") {
       endpoint = "http://localhost:6030/api4/chat";
+    } else if (SelectedModel === "Claude 3.5 Sonnet") {
+      endpoint = "http://localhost:6030/api5/chat";
     }
     try {
       const response = await axios.post(endpoint, {
@@ -36,7 +38,10 @@ const Search = ({ SetResponse }: SearchProps) => {
             ? "llama3-70b-8192"
             : SelectedModel === "Command-R-Plus"
             ? "command-r"
-            : "",
+            : SelectedModel === "Claude 3.5 Sonnet"
+            ? "claude-3-5-sonnet-20240620"
+            : ""
+
       });
       console.log(response.data.response);
       SetResponse(response.data.response);

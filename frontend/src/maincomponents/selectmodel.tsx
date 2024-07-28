@@ -25,6 +25,7 @@ export function SelectModel({onChange}: SelectModelProps) {
           <SelectItem value="llama-70b-8192">llama-3</SelectItem>
           <SelectItem value="Mixtral-8x7b-32768">Mistral</SelectItem>
           <SelectItem value="command-r-plus">Command-R-Plus</SelectItem>
+          <SelectItem value="claude-3-5-sonnet-20240620">Claude 3.5 Sonnet</SelectItem>
         </SelectGroup>
         <SelectGroup>
           <SelectLabel className="text-red-600">Image-Based</SelectLabel>

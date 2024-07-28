@@ -8,8 +8,8 @@ return (
     <div className="flex justify-center items-center h-screen">
         <Card className="mx-auto max-w-sm">
             <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold">Signup</CardTitle>
-                <CardDescription>Enter your details to create your account with ModelMerge</CardDescription>
+                <CardTitle className="text-2xl font-bold flex justify-center">Signup</CardTitle>
+                <CardDescription className="text-center">Enter your details to create your account with ModelMerge</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
@@ -26,7 +26,7 @@ return (
                         <Input id="password" type="password" required />
                     </div>
                     <Button type="submit" className="w-full hover:bg-red-600">
-                        Login
+                        Sign-Up
                     </Button>
                 </div>
             </CardContent>

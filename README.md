@@ -113,7 +113,8 @@ To run tests, run the following command
 
 ## Support
 
-For support, email vermausav018@gmail.com.
+For support, email vermausav018@gmail.com. 
+or you can also reach out to me on linkedin
 
 ## Badges
 

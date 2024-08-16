@@ -1,5 +1,8 @@
-import { sign, verify } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
+const {sign , verify} = jwt;
+dotenv.config();
 
 const secret = process.env.JWT_SECRET || 'your-secret-key'; // Make sure to set this in your .env file
 
@@ -11,4 +14,4 @@ const verifyToken = (token) => {
   return verify(token, secret);
 };
 
-module.exports = {generateToken, verifyToken};
+export default { generateToken, verifyToken };

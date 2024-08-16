@@ -4,6 +4,9 @@ import groq from './routes/groq.js';
 import openai from './routes/openai.js';
 import cohere from './routes/cohere.js';
 import claude from './routes/claude.js';
+import auth from './routes/auth.js';
+import authmiddleware from './middleware/authmiddleware.js'
+
 import cors from 'cors';
 //import sdxl from './routes/monster.js'; //Issues with this route
 
@@ -11,6 +14,10 @@ configDotenv();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use('/auth', auth);
+
+app.use(authmiddleware);
 
 // Middleware
 app.use(express.json());

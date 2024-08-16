@@ -1,13 +1,17 @@
-import { sign, verify } from 'jsonwebtoken';
+import { verifyToken } from '../utils/jwt';
 
-const secret = process.env.JWT_SECRET || 'your-secret-key'; // Make sure to set this in your .env file
 
-const generateToken = (user) => {
-  return sign({ id: user.id, email: user.email }, secret, { expiresIn: '1h' });
+const authmiddleware = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Token required' });
+
+  try {
+    const user = verifyToken(token);
+    req.user = user;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
 };
 
-const verifyToken = (token) => {
-  return verify(token, secret);
-};
-
-module.exports = {generateToken, verifyToken};
+export default authmiddleware;

@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import generateToken  from '../utils/jwt.js';
+import  {generateToken}  from '../utils/jwt.js';
 import express from 'express';
 import { PrismaClient } from '@prisma/client'
 
@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 
 router.post('/register', async (req, res) => {
   const { email, password, name } = req.body;
-
+    console.log(req.body);
   // Check if the user already exists
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
@@ -33,24 +33,33 @@ router.post('/register', async (req, res) => {
 
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    
+    const token = generateToken(user);
+
+    
+    res.json({
+      message: 'Login successful',
+      authtoken: token,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
-
- 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
-
-  // Generate a token
-  const token = generateToken(user);
-
-  res.json({ token });
 });
 
 

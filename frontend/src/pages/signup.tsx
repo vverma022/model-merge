@@ -22,13 +22,13 @@ const handlesubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
     const response = await axios.post('http://localhost:6030/auth/register', {
-            Email,
-            Password,
+            email: Email,
+            password: Password,
             name: Username,
           });
     
           // Handle success
-          SetSuccess('Registration successful! Please check your email for verification.');
+          SetSuccess(response.data.message);
           SetError('');
 
     } catch (error: any){

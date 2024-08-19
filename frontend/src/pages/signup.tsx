@@ -4,6 +4,7 @@ import { Input } from "../components/ui/input"
 import { Button } from "../components/ui/button"
 import { useState } from "react"
 import axios from "axios"
+import { ErrorProps} from "../utils/interfaces"
 
 export default function Signup() {
 const [Username, SetUsername] = useState('');
@@ -12,11 +13,7 @@ const [Password, SetPassword] = useState('');
 const [Error, SetError] = useState('');
 const [Success, SetSuccess] = useState(' ');
 
-interface ErrorProps {
-    response: any
-    error: string;
-    event: string;
-}
+
 
 const handlesubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();

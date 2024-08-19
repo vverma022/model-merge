@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";
+import { ErrorProps } from "../utils/interfaces"
 
 export default function Signin() {
     const [Email, SetEmail] = useState("");
@@ -13,11 +14,6 @@ export default function Signin() {
     const [Success, SetSuccess] = useState(' ');
     const navigate = useNavigate();
 
-    interface ErrorProps {
-        response: any
-        error: string;
-        event: string;
-    }
 
     const handlesubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
@@ -58,11 +54,12 @@ return (
                     <Button type="submit" className="w-full hover:bg-red-600">
                         Login
                     </Button>
-                    <Button type="button"  className="w-full bg-secondary text-primary" onClick={() => navigate('/signup')}>
+                    <Button type="button"  className="w-full bg-secondary text-primary hover:bg-slate-600" onClick={() => navigate('/signup')}>
                         Don't have an account? Sign up
                     </Button>
                 </div>
-                {Success && <div className="text-green-600">{Success}</div>}
+                {Success && <div className="text-green-600 text-center">{Success}</div>}
+                {Error && <div className="text-red-600 text-center">{Error}</div>}
                 </form>
             </CardContent>
         </Card>

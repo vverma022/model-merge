@@ -5,15 +5,23 @@ import { Button } from "../components/ui/button"
 import { useState } from "react"
 import axios from "axios"
 import { ErrorProps} from "../utils/interfaces"
+import {Icon} from 'react-icons-kit';
+import {eyeOff} from 'react-icons-kit/feather/eyeOff';
+import {eye} from 'react-icons-kit/feather/eye'
 
 export default function Signup() {
 const [Username, SetUsername] = useState('');
 const [Email, SetEmail] = useState('');
 const [Password, SetPassword] = useState('');
+const [ShowPassword, SetShowPassword] = useState(true);
 const [Error, SetError] = useState('');
 const [Success, SetSuccess] = useState(' ');
 
 
+
+const togglePasswordVisibility = () => {
+    SetShowPassword(!ShowPassword);
+};
 
 const handlesubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -53,8 +61,22 @@ return (
                         <Input id="email" type="email" placeholder="m@example.com" required value={Email} onChange={(e) => SetEmail(e.target.value)}/>
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input id="password" type="password" required  value= {Password} onChange={(e) => SetPassword(e.target.value)} />
+                    <Label htmlFor="password">Password</Label>
+            <div className="relative">
+                <Input
+                    id="password"
+                    type={ShowPassword ? 'text' : 'password'}
+                    value={Password}
+                    onChange={(e) => SetPassword(e.target.value)}
+                    required
+                />
+                <span 
+                    onClick={togglePasswordVisibility} 
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                >
+                    <Icon icon={ShowPassword ? eyeOff : eye} size={20} />
+                </span>
+            </div>
                     </div>
                     <Button type="submit" className="w-full hover:bg-red-600">
                         Sign-Up
